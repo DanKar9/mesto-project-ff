@@ -1,2 +1,2 @@
-# Проектная работа Mesto
+https://github.com/DanKar9/mesto-project-ff.git
 
