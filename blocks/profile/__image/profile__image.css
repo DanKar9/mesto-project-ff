@@ -7,6 +7,27 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  position: relative;
+}
+
+.profile__image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: url("../../../src/images/edit-icon.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.2s linear;
+}
+
+.profile__image:hover::after {
+  opacity: 1;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 740px) {
