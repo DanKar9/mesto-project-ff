@@ -5,6 +5,7 @@
 @import url('./__form/popup__form.css');
 @import url('./__input/popup__input.css');
 @import url('./__button/popup__button.css');
+@import url('./__button/popup__button-disabled');
 @import url('./__caption/popup__caption.css');
 @import url('./__image/popup__image.css');
 @import url('./__form-error-message/src/blocks/popup/__form-error-message/_active/popup__form-error-message_active.css');

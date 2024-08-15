@@ -2,7 +2,7 @@ import { addLike, deleteCard, deleteLike } from "./api";
 
 export { createCard, handleDelete, handleLike };
 // функция создания карточки
-function createCard(element, handleDelete, openPopupImage, handleLike,profileId) {
+function createCard(element, handleDelete,handleLike, openPopupImage,profileId) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardTitle = cardElement.querySelector(".card__title");
@@ -13,7 +13,6 @@ function createCard(element, handleDelete, openPopupImage, handleLike,profileId)
   cardImage.alt = element.name;
 
   
- 
     const likeButton = cardElement.querySelector(".card__like-button");
     const likeCount = cardElement.querySelector('.card__like-Count')
     const deleteButton = cardElement.querySelector(".card__delete-button");
@@ -64,6 +63,8 @@ function handleLike(evt,cardId,likeCount) {
   })
   .catch((err)=> console.log(err))
 }
+
+
 
 
 

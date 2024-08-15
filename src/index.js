@@ -19,6 +19,7 @@ const popupInputTypeDescription = profileFormElement.querySelector(".popup__inpu
 const addCardForm = document.querySelector('form[name="new-place"]');
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const popupAddCard = document.querySelector('.popup__content')
 const cardNameInput = document.querySelector(".popup__input_type_card-name");
 const cardLinkInput = document.querySelector(".popup__input_type_url");
 const popupImage = document.querySelector(".popup_type_image");
@@ -31,7 +32,7 @@ const popupEditAvatarSaveButton = popupEditAvatar.querySelector('.popup__form-sa
 const popupEditAvatarCloseButton = popupEditAvatar.querySelector(".popup__close")
 const avatarPhoto = document.querySelector('.profile__image')
 const popupEditAvatarForm = document.querySelector(".popup__form-input-container_type_update-avatar");
-const avatarLink = document.querySelector(".popup__form-item_el_link")
+const avatarLink = popupEditAvatarForm.querySelector(".popup__form-item_el_link")
 const popupSaveButton = document.querySelector('.popup__button ')
 
 const validationConfig = {
@@ -47,8 +48,8 @@ function cardList(element,profileId) {
   const newCard = createCard(
     element,
     handleDelete,
-    openPopupImage,
     handleLike,
+    openPopupImage,
     profileId
   )
  addCard(newCard)
@@ -104,7 +105,7 @@ popupCloseButtons.forEach((button) => {
 // обработчик отправки формы редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  popupSaveButton.textContent = 'Сохранение...'
+  renderLoading(true,editProfilePopup)
   editingProfile(popupInputTypeName.value,popupInputTypeDescription.value)
   .then(()=> {
     profileTitle.textContent = popupInputTypeName.value;
@@ -112,7 +113,7 @@ function handleProfileFormSubmit(evt) {
     closePopup(editProfilePopup);
   }) 
   .finally(()=> {
-    popupSaveButton.textContent = 'Сохранить'
+    renderLoading(false,editProfilePopup)
   })
   .catch((err) => {
     console.log(err)
@@ -129,18 +130,17 @@ function openPopupImage(element) {
 // обработчик отправки формы добавления карточки
 function addCardSubmit(evt) {
   evt.preventDefault();
+  renderLoading(true,openModalNewCard)
   newSessionCard(cardNameInput.value,cardLinkInput.value)
-  const name = cardNameInput.value;
-  const link = cardLinkInput.value;
-  const newCard = createCard(
-    { name, link },
-    handleDelete,
-    openPopupImage,
-    handleLike
-  );
-  addCard(newCard, true);
-  addCardForm.reset();
-  closePopup(openModalNewCard);
+  .then((card)=> {
+    cardList(card,profileId)
+    closePopup(popupAddCard)
+  })
+  .finally(()=> {
+    renderLoading(false,openModalNewCard)
+  })
+  .catch((err)=> console.log(err))
+ 
 }
 
 function addCard(element, toStart) {
@@ -153,17 +153,30 @@ function addCard(element, toStart) {
 
 function newAvatar (evt) {
   evt.preventDefault()
-  popupEditAvatarSaveButton.textContent = 'Сохранение...'
+  renderLoading(true,popupEditAvatar)
   updateAvatar(avatarLink.value)
   .then((res)=> {
     avatarPhoto.style.backgroundImage(`url('${res.avatar}')`)
     closePopup(popupEditAvatar)
   })
   .finally(()=> {
-    popupEditAvatarSaveButton.textContent = 'Сохранить'
+    renderLoading(false,popupEditAvatar)
   })
   .catch((err)=> console.log(err))
 }
+
+
+//уведомление пользователя о результатах загрузки
+const renderLoading = (isLoading, formElement) => {
+  const buttonElement = formElement.querySelector(".popup__button");
+  if (isLoading) {
+    buttonElement.setAttribute("data-text", buttonElement.textContent);
+    buttonElement.textContent = "Сохранение...";
+  } else {
+    buttonElement.textContent = buttonElement.getAttribute("data-text");
+    buttonElement.removeAttribute("data-text");
+  }
+};
 
 popupEditAvatarForm.addEventListener('submit',newAvatar)
 
@@ -171,12 +184,3 @@ profileFormElement.addEventListener("submit", handleProfileFormSubmit); // об�
 addCardForm.addEventListener("submit", addCardSubmit); // обработчик отправки формы добавления карточки
 
 enableValidation(validationConfig)
-
-
-
-
-
-
-
-
-

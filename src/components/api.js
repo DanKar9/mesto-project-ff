@@ -42,8 +42,8 @@ export const newSessionCard = (name,link) => {
         headers:config.headers,
         body: JSON.stringify({
             name : name,
-            link: link
-        })
+            link: link,
+        }),
     })
     .then(handleResponse)
 }
@@ -74,9 +74,12 @@ export const deleteCard = (cardId) => {
 }
 
 export const updateAvatar = (avatar) => {
-    return fetch (`${config.baseUrl}/users/me/${avatar}`,{
+    return fetch (`${config.baseUrl}/users/me/avatar`,{
         method: 'PATCH',
-        headers: config.headers
+        headers: config.headers,
+        body: JSON.stringify({
+            avatar:avatar,
+        })
     })
     .then(handleResponse)
 }
@@ -88,5 +91,4 @@ function handleResponse (res) {
        return Promise.reject(`Ошибка ${res.status}`)
     }
 }
-
 
