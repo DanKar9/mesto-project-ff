@@ -44,7 +44,7 @@ const validationConfig = {
   errorClass: "popup__error_visible",
 };
 
-function cardList(element,profileId) {
+function addCardList(element,profileId) {
   const newCard = createCard(
     element,
     handleDelete,
@@ -52,7 +52,7 @@ function cardList(element,profileId) {
     openPopupImage,
     profileId
   )
- addCard(newCard)
+ addCard(newCard,true)
 }
 
 Promise.all([infoPerson(),getCards()])
@@ -63,8 +63,8 @@ Promise.all([infoPerson(),getCards()])
   profileDescription.textContent = profile.about
   avatar.style.backgroundImage = `url('${newAvatar}')`
 
-  cards.forEach((card) => {
-    cardList(card,profileId)
+  cards.reverse().forEach((card) => {
+    addCardList(card,profileId)
   })
 })  
 .catch((err)=> {
@@ -133,8 +133,8 @@ function addCardSubmit(evt) {
   renderLoading(true,openModalNewCard)
   newSessionCard(cardNameInput.value,cardLinkInput.value)
   .then((card)=> {
-    cardList(card,profileId)
-    closePopup(popupAddCard)
+    addCardList(card,profileId)
+    closePopup(openModalNewCard)
   })
   .finally(()=> {
     renderLoading(false,openModalNewCard)
@@ -156,7 +156,7 @@ function newAvatar (evt) {
   renderLoading(true,popupEditAvatar)
   updateAvatar(avatarLink.value)
   .then((res)=> {
-    avatarPhoto.style.backgroundImage(`url('${res.avatar}')`)
+    avatarPhoto.style.backgroundImage = `url('${res.avatar}')` 
     closePopup(popupEditAvatar)
   })
   .finally(()=> {

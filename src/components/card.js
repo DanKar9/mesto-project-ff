@@ -41,7 +41,8 @@ function createCard(element, handleDelete,handleLike, openPopupImage,profileId) 
 
   //  открытие модального окна с картинкой
   cardImage.addEventListener("click", () => {
-    openPopupImage(element.link, element.name);
+    
+    openPopupImage(element);
   });
   return cardElement;
 }
